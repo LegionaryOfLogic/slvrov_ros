@@ -9,7 +9,7 @@
 ```bash
 mkdir -p ~/slvrov_ws/src
 cd ~/slvrov_ws/src
-git clone --recurse-submodules https://github.com/you/slvrov_ros.git
+git clone --recurse-submodules https://github.com/LegionaryOfLogic/slvrov_ros.git
 cd ..
 colcon build --symlink-install
 source install/setup.bash
