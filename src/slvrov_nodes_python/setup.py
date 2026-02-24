@@ -13,7 +13,7 @@ setup(
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='iroh_ubuntu',
+    maintainer='LegionaryOfLogic',
     maintainer_email='calebhof11@gmail.com',
     description='TODO: Package description',
     license='TODO: License declaration',
@@ -24,7 +24,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'test_pub=slvrov_nodes_python.testpublishernode:main'
+            'pca9685_node=slvrov_nodes_python.pca9685_node:main',
         ],
     },
 )

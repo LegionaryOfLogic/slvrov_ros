@@ -5,6 +5,9 @@ setup(
     version="0.1.0",
     packages=find_packages(where='slvrov_tools/src'),
     package_dir={'': 'slvrov_tools/src'},
+    package_data={
+        "slvrov_tools": ["*.so"],
+    },
     install_requires=[
         'setuptools',
         'numpy',
