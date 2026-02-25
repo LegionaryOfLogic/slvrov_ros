@@ -10,7 +10,7 @@ from slvrov_interfaces.msg import PCA9685Command
 # string[] id e.g. ["thruster_1", "thruster_2"]
 # float32[] pwm percentage e.g. [0.5, -0.5]
 
-from .submersed_globals import I2C_BUS1, PIN_CONFIG_PATH
+from .submersed_globals import I2C_BUS1, PCA9685_PIN_CONFIGS
 
 
 class PCA9685Node(Node):
@@ -22,7 +22,7 @@ class PCA9685Node(Node):
         self.frequency = self.get_parameter("frequency_hz").value
 
         self.pca9685 = PCA9685(I2C_BUS1, self.frequency)
-        self.pin_configs = get_pin_configs(PIN_CONFIG_PATH)
+        self.pin_configs = PCA9685_PIN_CONFIGS
         self.get_logger().info(f"Retrieved PCA9685 pin configs: {self.pin_configs}")
 
         self.pca9685_command_subscription = self.create_subscription(PCA9685Command, "pca9685_command", self.pca9685_command_callback, 10)
