@@ -25,6 +25,7 @@ setup(
     entry_points={
         'console_scripts': [
             'pca9685_node=slvrov_nodes_python.pca9685_node:main',
+            'pca9685_pin_configs_server=slvrov_nodes_python.pca9685_pin_configs_server:main'
         ],
     },
 )
