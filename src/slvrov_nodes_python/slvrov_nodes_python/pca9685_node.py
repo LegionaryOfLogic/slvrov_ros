@@ -29,7 +29,7 @@ class PCA9685Node(Node):
 
     def pca9685_command_callback(self, msg):
         try:
-            for id_, pwm in zip(msg.id, msg.pwm):
+            for id_, pwm in zip(list(msg.id), list(msg.pwm)):
 
                 # Don't want to raise Exception b/c it will crash node and we want to be able to continue receiving commands, but log error for debugging
                 if id_ not in self.pin_configs: self.get_logger().error(f"Invalid PCA9685 pin id: {id_}, skipping command")
