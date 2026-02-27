@@ -2,10 +2,6 @@ import rclpy
 from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 
-import os
-import errno
-import traceback
-
 from slvrov_interfaces.srv import AddPCA9685PinConfigs, GetPCA9685PinConfigs
 from slvrov_tools.pca9685 import *
 
