@@ -309,12 +309,13 @@ class JoystickLogicNode(Node):
         self.declare_parameter(
             "mixing_matrix",
             [
-                [1.0,  1.0, -1.0,  0.0,  0.0],
-                [1.0, -1.0,  1.0,  0.0,  0.0],
-                [1.0, -1.0, -1.0,  0.0,  0.0],
-                [1.0,  1.0,  1.0,  0.0,  0.0],
-                [0.0,  0.0,  0.0, -1.0,  1.0],
-                [0.0,  0.0,  0.0, -1.0, -1.0],
+                [1.0, 1.0, -1.0, 0.0, 0.0], # thruster 1 
+                [1.0, -1.0, 1.0, 0.0, 0.0],# thruster 2
+                [1.0, -1.0, -1.0, 0.0, 0.0],# thruster 3
+                [1.0, -1.0, 1.0, 0.0, 0.0],# thruster 4
+                [0.0, 0.0, 0.0, -1.0, 1.0],# thruster 5
+                [0.0, 0.0, 0.0, -1.0, -1.0]# thruster 6
+                #Changed Mixing matrix and adjusted as our thrusters are not facing opposite ways atm
             ],
         )
         self.declare_parameter("thruster_inversions", [1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
