@@ -28,7 +28,8 @@ setup(
             'joystick_logic=slvrov_nodes_python.multi_joy_logic:main',
             'pca9685_node=slvrov_nodes_python.pca9685_node:main',
             'pca9685_pin_configs_server=slvrov_nodes_python.pca9685_pin_configs_server:main',
-            'pca9685_pin_configs_client=slvrov_nodes_python.pca9685_pin_configs_client:main'
+            'pca9685_pin_configs_client=slvrov_nodes_python.pca9685_pin_configs_client:main',
+            'thruster_bridge=slvrov_nodes_python.thruster_bridge_node:main'
         ],
     },
 )

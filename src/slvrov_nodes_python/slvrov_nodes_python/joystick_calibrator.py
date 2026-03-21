@@ -112,7 +112,7 @@ class JoystickCalibrator(Node):
         super().__init__("joystick_calibrator")
 
         self.declare_parameter("joy_topics", [])
-        self.declare_parameter("output_path", "joy_mappings.yaml")
+        self.declare_parameter("joystick_configs_path", "joy_mappings.yaml")
         self.declare_parameter("axis_threshold", 0.6)
         self.declare_parameter("button_score", 1.25)
         self.declare_parameter("quiet_seconds", 0.75)
@@ -167,7 +167,7 @@ class JoystickCalibrator(Node):
         ]
 
         self.joy_topics: List[str] = []
-        self.subscriptions: Dict[str, object] = {}
+        self.joy_subscriptions: Dict[str, object] = {}
         self.latest: Dict[str, Optional[Joy]] = {}
         self.previous: Dict[str, Optional[Joy]] = {}
         self.mappings: List[JoystickMapping] = []
@@ -257,12 +257,12 @@ class JoystickCalibrator(Node):
         self.waiting_for_topics_logged = False
 
         for topic in target_topics:
-            if topic in self.subscriptions:
+            if topic in self.joy_subscriptions:
                 continue
 
             self.latest[topic] = None
             self.previous[topic] = None
-            self.subscriptions[topic] = self.create_subscription(
+            self.joy_subscriptions[topic] = self.create_subscription(
                 Joy,
                 topic,
                 lambda msg, bound_topic=topic: self._joy_callback(
