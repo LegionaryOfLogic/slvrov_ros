@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Optional, Sequence
 import json
-
+from slvrov_interfaces.msg import PCA9685Command
 import numpy as np
 import rclpy
 from rclpy.executors import ExternalShutdownException
@@ -355,7 +355,7 @@ class JoystickLogicNode(Node):
             thruster_inversions=thruster_inversions,
         )
         self.claw = ClawController()
-
+        self.thruster_pub = self.create_publisher(PCA9685Command, "thruster_command", 10)
         self.latest_joy: Dict[str, Optional[Joy]] = {topic: None for topic in self.joy_topics}
         self.last_joy_time: Dict[str, Optional[float]] = {topic: None for topic in self.joy_topics}
 
@@ -391,7 +391,27 @@ class JoystickLogicNode(Node):
         """
         self.latest_joy[topic] = msg
         self.last_joy_time[topic] = self.get_clock().now().nanoseconds / 1e9
-
+    def _build_command(self, pwm: list, claw: dict) -> PCA9685Command:
+        """Pack computed outputs into a PCA9685Command message.
+ 
+        Publishes normalised [-1, 1] floats with logical string IDs.
+        thruster_bridge_node is responsible for forwarding these to pca9685_node
+        on the /pca9685_command topic.
+ 
+        Args:
+            pwm:  Integer PWM list, one value per thruster row in mixing_matrix.
+            claw: Dict of claw actuator name to integer PWM value.
+ 
+        Returns:
+            Packed PCA9685Command ready to publish on /thruster_command.
+        """
+        def norm(p: int, mid: int = 1500, half: int = 400) -> float:
+            return float(max(-1.0, min(1.0, (p - mid) / half)))
+        
+        msg     = PCA9685Command()
+        msg.id  = [f"thruster_{i+1}" for i in range(len(pwm))] + list(claw.keys())
+        msg.pwm = [norm(p) for p in pwm] + [norm(v) for v in claw.values()]
+        return msg
     @staticmethod
     def _load_mapping_file(path_str: str) -> tuple[List[str], List[dict]]:
         """Load joystick topics and mappings from JSON or YAML."""
@@ -543,7 +563,7 @@ class JoystickLogicNode(Node):
                     f"thrusters={[round(float(x), 2) for x in thrusters]} | "
                     f"pwm={pwm} | claw={claw_outputs}"
                 )
-
+        self.thruster_pub.publish(self._build_command(pwm, claw_outputs))
 
 def main(args=None):
     node = None
