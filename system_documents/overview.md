@@ -70,7 +70,7 @@ graph TD
     JoyCal(["Joystick Calibration"])
     JoyCalFil[("Calibrated Joystick File")]
     JoyLog(["Joystick Logic"])
-    GstOut[["Display Video with GStreamer"]]
+    CamOut[["Display Video on Webpage"]]
 
     JoyIn--"joy topics"-->JoyCal
     JoyCal-->JoyCalFil
@@ -83,14 +83,14 @@ graph TD
     PinConfSr(["Pin Configuration Server"])
     PinConfFil[("Pin Configurations JSON")]
     Pwm(["PCA9685 (PWM) Interface"])
-    GstIn[["Stream Video with GStreamer"]]
+    CamIn[["Serve Video Streams on Webpage"]]
 
     PinConfCl--"pin_config services"-->UbD
     UbS--"pin_config services"-->PinConfSr
-    JoyLog--"pca9685_command"-->UbD
-    UbS--"pca9685_command"-->Pwm
-    GstIn--"gstreamer pipeline"-->UbS
-    UbD--"gstreamer pipeline"-->GstOut
+    JoyLog--"pca9685 topic"-->UbD
+    UbS--"pca9685 topic"-->Pwm
+    CamIn--"WebRTC"-->UbS
+    UbD--"WebRTC"-->CamOut
 
     PinConfSr-->PinConfFil
     PinConfFil-->Pwm
